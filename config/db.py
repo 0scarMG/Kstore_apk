@@ -14,4 +14,4 @@ class MongoDB:
     def get_db(self):
         return self.db
 
-db = MongoDB().get_db()
+db_instance = MongoDB().get_db()
