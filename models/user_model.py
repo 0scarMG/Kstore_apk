@@ -66,15 +66,14 @@ class UserModel:
             return {"success": False, "message": "Error interno del servidor"}
 
     def validate_user(self, email, password):
-        """Valida las credenciales de un usuario"""
+        """Valida las credenciales de un usuario y retorna los datos si son correctos"""
         if self.collection is None:
-            return False
+            return None
 
         user = self.collection.find_one({"email": email.lower().strip()})
-        if not user:
-            return False
-
-        return self.check_password(password, user["password"])
+        if user and self.check_password(password, user["password"]):
+            return user  # ✅ Regresa el diccionario del usuario
+        return None
 
     def get_user_by_email(self, email):
         if self.collection is None:

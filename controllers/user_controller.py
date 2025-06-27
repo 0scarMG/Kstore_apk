@@ -8,10 +8,14 @@ class UserController:
         self.view = view
 
     def login(self, username, password):
-        if self.model.validate_user(username, password):
+        user_data = self.model.validate_user(username, password)
+        if user_data:
             self.view.show_message("Login exitoso ✅")
+            # Redirigir a la vista del menú pasando los datos del usuario
+            self.view.go_to_menu(user_data)
         else:
             self.view.show_message("Credenciales inválidas ❌")
+            
 
     def register(self, name, email, password, confirm_password):
         """Procesa el registro de un nuevo usuario"""

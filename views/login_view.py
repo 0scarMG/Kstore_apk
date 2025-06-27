@@ -206,3 +206,6 @@ class LoginView:
     def show_message(self, text):
         self.message.value = text
         self.page.update()
+
+    def go_to_menu(self, user_data):
+        self.go_to_route("/menu", user_data)
