@@ -1,5 +1,5 @@
 import flet as ft
-from models.user_model import UserModel
+from controllers.user_controller import UserController
 
 class LoginView:
     def __init__(self, page: ft.Page, go_to_route):
@@ -55,7 +55,7 @@ class LoginView:
             style=ft.ButtonStyle(color="#1e3ce5")
         )
 
-        self.controller = UserModel(self)
+        self.controller = UserController(self)
 
         # Construcción del formulario de login con las dimensiones del RegisterView
         login_form = ft.Container(

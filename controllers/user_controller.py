@@ -1,5 +1,5 @@
-import models.user_model as UserModel
-from services.validation_service import vs
+from models.user_model import UserModel
+import services.validation_service as vs
 
 
 class UserController:

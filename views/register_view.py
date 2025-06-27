@@ -1,6 +1,5 @@
 import flet as ft
-from models.user_model import UserModel
-
+from controllers.user_controller import UserController
 class RegisterView:
     def __init__(self, page: ft.Page, go_to_route):
         self.page = page
@@ -78,7 +77,7 @@ class RegisterView:
         )
 
         # Inicializar el controlador
-        self.controller = UserModel(self)
+        self.controller = UserController(self)
 
         # Construcción del formulario con imagen de fondo correcta
         register_form = ft.Container(
