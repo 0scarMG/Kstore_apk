@@ -5,8 +5,8 @@ from views.register_view import RegisterView
 def main(page: ft.Page):
     page.title = "Kstore"
     page.theme_mode = ft.ThemeMode.LIGHT
-    page.window.width = 800
-    page.window.height = 600
+    page.window.width = 411 
+    page.window.height = 731
     page.bgcolor = "#f0f2f5"
     page.window.resizable = True
 

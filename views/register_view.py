@@ -111,7 +111,7 @@ class RegisterView:
                                     ),
                                     alignment=ft.alignment.center,
                                     padding=ft.padding.only(top=30, bottom=20),
-                                    width=400
+                                    width=411
                                 ),
                                 
                                 # Campos del formulario
@@ -132,6 +132,12 @@ class RegisterView:
                                 ft.Divider(color=ft.Colors.GREY_400, thickness=1),
                                 ft.Container(height=10),
                                 
+                                ft.TextButton(
+                                    text="¿Ya tienes cuenta? Inicia sesion aquí",
+                                    style=ft.ButtonStyle(color="#1e3ce5"),
+                                    on_click=lambda e: self.go_to_route("/login")
+                                ),
+
                                 # Texto "O regístrese con"
                                 ft.Text(
                                     "O regístrese con",
@@ -202,14 +208,10 @@ class RegisterView:
         # Agregar todo a la página
         self.page.add(
             ft.Column(
-                controls=[
+                controls=[ 
                     register_form, 
                     ft.Container(height=10),
                     self.message,
-                    ft.TextButton(
-                        "¿Ya tienes una cuenta? Inicia sesión",
-                        on_click=lambda e: self.go_to_route("/login")
-                    )
                 ],
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 alignment=ft.MainAxisAlignment.CENTER,
