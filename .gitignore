@@ -1,3 +1,6 @@
 # Archivos sensibles (¡IMPORTANTE!)
 .env
-__pycache__
+
+# Archivos generados por Python
+**/__pycache__/
+*.py[cod]
