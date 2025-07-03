@@ -29,7 +29,8 @@ class Database:
             # El comando 'ping' confirma una conexión exitosa.
             self.client.admin.command('ping')
             print("Conexión a MongoDB exitosa.")
-            self.db = self.client.get_default_database()
+            self.db = self.client["kstoredb"]  # Nombre de la base de datos
+            # Inicializa la colección de productos
             self.products_collection = self.db.products
             self._seed_database() # Poblar con datos de ejemplo si es necesario
             return True
@@ -42,7 +43,7 @@ class Database:
 
     def get_all_products(self):
         """Obtiene todos los productos de la colección."""
-        if not self.products_collection:
+        if self.products_collection is None:
             return []
         try:
             return list(self.products_collection.find())
@@ -54,7 +55,7 @@ class Database:
         """
         Busca productos por nombre o categoría usando una expresión regular (case-insensitive).
         """
-        if not self.products_collection:
+        if self.products_collection is None or not query:
             return []
         try:
             # Búsqueda case-insensitive en los campos 'nombre' y 'categoria'

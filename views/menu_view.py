@@ -42,7 +42,7 @@ class MenuView:
         
         # CREAR Y MOSTRAR el mensaje de bienvenida CORRECTAMENTE
         if self.user_data:
-            welcome_name = self.user_data.get('Nombre', 'Usuario')
+            welcome_name = self.user_data.get('usuario', 'Usuario')
             # Crear el SnackBar correctamente
             welcome_snack = ft.SnackBar(
                 content=ft.Text(f"¡Bienvenido de vuelta, {welcome_name}!"),
