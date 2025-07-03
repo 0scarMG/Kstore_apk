@@ -1,6 +1,5 @@
 # views/menu_view.py
 import flet as ft
-# Asegúrate de que la importación coincida con el nombre de tu clase y archivo
 from controllers.menu_controller import MenuController
 from components.store_components import Navbar, StoreLayout, BottomNavBar
 
@@ -13,7 +12,6 @@ class MenuView:
         self.go_to_route = go_to_route
         self.user_data = user_data
 
-        # --- CORRECCIÓN AQUÍ ---
         # 1. Instanciar el controlador PRIMERO y asignarlo a self.controller
         # Esto crea el atributo 'controller' en el objeto 'MenuView'.
         self.controller = MenuController()

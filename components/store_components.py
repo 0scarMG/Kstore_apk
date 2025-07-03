@@ -13,7 +13,7 @@ class Navbar(ft.AppBar):
         self.controller = controller
         
         self.search_bar = ft.TextField(
-            hint_text="Buscar en KPOP Store...",
+            hint_text="Buscar en Kstore...",
             expand=True,
             bgcolor=ft.Colors.WHITE,
             color=ft.Colors.BLACK,
