@@ -21,8 +21,8 @@ class MenuController:
     
     def _load_data_in_background(self):
         try:
-            print("Hilo iniciado. Simularé una espera de 2 segundos...")
-            time.sleep(2) # <--- 2. AÑADE ESTE RETRASO ARTIFICIAL
+            print("Hilo iniciado. Simularé una espera de 1 segundo...")
+            time.sleep(1) # <--- 2. AÑADE ESTE RETRASO ARTIFICIAL
 
             if not self.db.connect():
                 raise ConnectionError("La conexión a la base de datos devolvió False.")
