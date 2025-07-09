@@ -1,15 +1,10 @@
-# model.py
 import os
 import pymongo
 from pymongo.errors import ConnectionFailure
 from dotenv import load_dotenv
 
 class Database:
-    """
-    Gestiona la conexión y las operaciones con la base de datos MongoDB.
-    """
     def __init__(self):
-        """Carga las variables de entorno para la conexión."""
         load_dotenv()
         self.mongo_uri = os.getenv("MONGO_URI")
         self.client = None
@@ -17,22 +12,16 @@ class Database:
         self.products_collection = None
 
     def connect(self):
-        """
-        Intenta conectarse a la base de datos MongoDB.
-        Devuelve True si la conexión es exitosa, False en caso contrario.
-        """
         if not self.mongo_uri:
             print("Error: La variable de entorno MONGO_URI no está configurada.")
             return False
         try:
             self.client = pymongo.MongoClient(self.mongo_uri)
-            # El comando 'ping' confirma una conexión exitosa.
             self.client.admin.command('ping')
             print("Conexión a MongoDB exitosa.")
-            self.db = self.client["kstoredb"]  # Nombre de la base de datos
-            # Inicializa la colección de productos
+            self.db = self.client["kstoredb"]
             self.products_collection = self.db.products
-            self._seed_database() # Poblar con datos de ejemplo si es necesario
+            self._seed_database()
             return True
         except ConnectionFailure as e:
             print(f"Error de conexión a MongoDB: {e}")
@@ -42,7 +31,6 @@ class Database:
             return False
 
     def get_all_products(self):
-        """Obtiene todos los productos de la colección."""
         if self.products_collection is None:
             return []
         try:
@@ -51,44 +39,46 @@ class Database:
             print(f"Error al obtener productos: {e}")
             return []
 
-    def search_products(self, query):
-        """
-        Busca productos por nombre o categoría usando una expresión regular (case-insensitive).
-        """
-        if self.products_collection is None or not query:
-            return []
+    def get_product_by_id(self, product_id: int):
+        if self.products_collection is None:
+            return None
         try:
-            # Búsqueda case-insensitive en los campos 'nombre' y 'categoria'
-            return list(self.products_collection.find({
-                "$or": [
-                    {"nombre": {"$regex": query, "$options": "i"}},
-                    {"categoria": {"$regex": query, "$options": "i"}}
-                ]
-            }))
+            return self.products_collection.find_one({"id": product_id})
         except Exception as e:
-            print(f"Error al buscar productos: {e}")
-            return []
-    
+            print(f"Error al obtener producto por ID: {e}")
+            return None
+
     def _seed_database(self):
-        """
-        Puebla la base de datos con datos de ejemplo si la colección 'products' está vacía.
-        Esto es útil para la primera ejecución.
-        """
         if self.products_collection is not None and self.products_collection.count_documents({}) == 0:
-            print("Base de datos vacía, insertando productos de ejemplo...")
+            print("Base de datos vacía, insertando productos de ejemplo con más detalles...")
             sample_products = [
-                {'id': 1, 'nombre': 'BTS - BE', 'precio': 25.99, 'categoria': 'Álbumes', 'imagen_url': 'https://ibighit.com/bts/images/bts/discography/be/rwM39x2S533aDD1b3p2lBNoG.jpg', 'stock': 100},
-                {'id': 2, 'nombre': 'BLACKPINK - The Album', 'precio': 22.50, 'categoria': 'Álbumes', 'imagen_url': 'https://upload.wikimedia.org/wikipedia/en/1/1a/Blackpink_-_The_Album.png', 'stock': 80},
-                {'id': 3, 'nombre': 'Stray Kids - Light Stick', 'precio': 55.00, 'categoria': 'Merchandising', 'imagen_url': 'https://cnjenter.com/cdn/shop/products/stray-kids-official-light-stick-ver.2--cn-j-entertainment-2_1024x.jpg?v=1685328236', 'stock': 50},
-                {'id': 4, 'nombre': 'TWICE - Formula of Love', 'precio': 24.00, 'categoria': 'Álbumes', 'imagen_url': 'https://upload.wikimedia.org/wikipedia/en/5/52/Twice_-_Formula_of_Love.png', 'stock': 120},
-                {'id': 5, 'nombre': 'TXT - The Chaos Chapter: FREEZE', 'precio': 21.99, 'categoria': 'Álbumes', 'imagen_url': 'https://ibighit.com/txt/images/txt/discography/the-chaos-chapter-freeze/EBlD2sIW2E4y_M52ridwMh5k.jpg', 'stock': 90},
-                {'id': 6, 'nombre': 'NCT - Universe Hoodie', 'precio': 45.00, 'categoria': 'Merchandising', 'imagen_url': 'https://m.media-amazon.com/images/I/61t-XGz-69L._AC_SY550_.jpg', 'stock': 30},
-                {'id': 7, 'nombre': 'Red Velvet - Queendom (Oferta)', 'precio': 18.99, 'categoria': 'Ofertas', 'imagen_url': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/Red_Velvet_-_Queendom.png/220px-Red_Velvet_-_Queendom.png', 'stock': 200},
-                {'id': 8, 'nombre': 'ATEEZ - Treasure EP.Fin: All to Action', 'precio': 23.50, 'categoria': 'Álbumes', 'imagen_url': 'https://upload.wikimedia.org/wikipedia/en/e/e1/ATEEZ_-_Treasure_EP.Fin_-_All_to_Action.png', 'stock': 75}
+                {
+                    'id': 1, 'nombre': 'BTS - BE', 'precio': 25.99, 'categoria': 'Álbumes',
+                    'descripcion': 'El álbum auto-producido de BTS que reflexiona sobre la vida durante la pandemia. Incluye el éxito "Dynamite".',
+                    'imagenes_urls': [
+                        'https://ibighit.com/bts/images/bts/discography/be/rwM39x2S533aDD1b3p2lBNoG.jpg',
+                        'https://m.media-amazon.com/images/I/717Q815UGXL._AC_SL1500_.jpg',
+                        'https://m.media-amazon.com/images/I/817A8cI1S6L._AC_SL1500_.jpg'
+                    ], 'stock': 100
+                },
+                {
+                    'id': 2, 'nombre': 'BLACKPINK - The Album', 'precio': 22.50, 'categoria': 'Álbumes',
+                    'descripcion': 'El esperado primer álbum de estudio de BLACKPINK. Incluye colaboraciones con Selena Gomez y Cardi B.',
+                    'imagenes_urls': [
+                        'https://upload.wikimedia.org/wikipedia/en/1/1a/Blackpink_-_The_Album.png',
+                        'https://m.media-amazon.com/images/I/81acE4A+V-L._AC_SL1500_.jpg'
+                    ], 'stock': 80
+                },
+                {
+                    'id': 3, 'nombre': 'Stray Kids - Light Stick', 'precio': 55.00, 'categoria': 'Merchandising',
+                    'descripcion': 'La nueva versión del light stick oficial de Stray Kids. Indispensable para cualquier fan en conciertos.',
+                    'imagenes_urls': [
+                        'https://cnjenter.com/cdn/shop/products/stray-kids-official-light-stick-ver.2--cn-j-entertainment-2_1024x.jpg?v=1685328236'
+                    ], 'stock': 0
+                }
             ]
             try:
                 self.products_collection.insert_many(sample_products)
                 print(f"{len(sample_products)} productos de ejemplo insertados.")
             except Exception as e:
                 print(f"Error al insertar productos de ejemplo: {e}")
-
